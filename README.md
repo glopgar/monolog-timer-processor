@@ -1,7 +1,7 @@
 monolog-timer-processor [![Build Status](https://travis-ci.org/glopgar/monolog-timer-processor.svg?branch=master)](https://travis-ci.org/glopgar/monolog-timer-processor)
 =======================
 
-Processor for [monolog](https://github.com/Seldaek/monolog) that allows to time fragments of code by adding timer info
+Processor for [monolog](https://github.com/Seldaek/monolog) that allows to time fragments of code by adding timers info to 
 the message contexts.
 
 #### Basic usage
