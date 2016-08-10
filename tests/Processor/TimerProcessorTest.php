@@ -70,7 +70,7 @@ class TimerProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $sut = new TimerProcessor();
         $this->testHandler = new TestHandler($level);
-        $this->logger = new \Monolog\Logger('test', [$this->testHandler]);
+        $this->logger = new \Monolog\Logger('test', array($this->testHandler));
         $this->logger->pushProcessor($sut);
         return $sut;
     }
@@ -80,31 +80,32 @@ class TimerProcessorTest extends \PHPUnit_Framework_TestCase
         $sut = $this->configureSut();
 
         MicrotimeStub::setMicrotime(1470000000);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'start']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'start')));
 
         MicrotimeStub::setMicrotime(1470000001);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'stop']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'stop')));
 
+        $records = $this->testHandler->getRecords();
         $this->assertEquals(
-            [
-                'timer' => [
-                    'foo' => [
+            array(
+                'timer' => array(
+                    'foo' => array(
                         'time' => 1,
                         'totalTime' => 1,
                         'count' => 1
-                    ]
-                ]
-            ],
-            $this->testHandler->getRecords()[1]['context']
+                    )
+                )
+            ),
+            $records[1]['context']
         );
 
         $this->assertEquals(
-            [
-                'foo' => [
+            array(
+                'foo' => array(
                     'totalTime' => 1,
                     'count' => 1
-                ]
-            ],
+                )
+            ),
             $sut->getTimers()
         );
     }
@@ -114,63 +115,65 @@ class TimerProcessorTest extends \PHPUnit_Framework_TestCase
         $sut = $this->configureSut();
 
         MicrotimeStub::setMicrotime(1470000000);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'start', 'bar' => 'start']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'start', 'bar' => 'start')));
 
         MicrotimeStub::setMicrotime(1470000001);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['baz' => 'start']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('baz' => 'start')));
 
         MicrotimeStub::setMicrotime(1470000002);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'stop']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'stop')));
 
+        $records = $this->testHandler->getRecords();
         $this->assertEquals(
-            [
-                'timer' => [
-                    'foo' => [
+            array(
+                'timer' => array(
+                    'foo' => array(
                         'time' => 2,
                         'totalTime' => 2,
                         'count' => 1
-                    ]
-                ]
-            ],
-            $this->testHandler->getRecords()[2]['context']
+                    )
+                )
+            ),
+            $records[2]['context']
         );
 
         MicrotimeStub::setMicrotime(1470000003);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['bar' => 'stop', 'baz' => 'stop']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('bar' => 'stop', 'baz' => 'stop')));
 
+        $records = $this->testHandler->getRecords();
         $this->assertEquals(
-            [
-                'timer' => [
-                    'bar' => [
+            array(
+                'timer' => array(
+                    'bar' => array(
                         'time' => 3,
                         'totalTime' => 3,
                         'count' => 1
-                    ],
-                    'baz' => [
+                    ),
+                    'baz' => array(
                         'time' => 2,
                         'totalTime' => 2,
                         'count' => 1
-                    ]
-                ]
-            ],
-            $this->testHandler->getRecords()[3]['context']
+                    )
+                )
+            ),
+            $records[3]['context']
         );
 
         $this->assertEquals(
-            [
-                'foo' => [
+            array(
+                'foo' => array(
                     'totalTime' => 2,
                     'count' => 1
-                ],
-                'bar' => [
+                ),
+                'bar' => array(
                     'totalTime' => 3,
                     'count' => 1
-                ],
-                'baz' => [
+                ),
+                'baz' => array(
                     'totalTime' => 2,
                     'count' => 1
-                ]
-            ],
+                )
+            ),
             $sut->getTimers()
         );
     }
@@ -180,37 +183,38 @@ class TimerProcessorTest extends \PHPUnit_Framework_TestCase
         $sut = $this->configureSut();
 
         MicrotimeStub::setMicrotime(1470000000);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'start']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'start')));
 
         MicrotimeStub::setMicrotime(1470000001);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'stop']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'stop')));
 
         MicrotimeStub::setMicrotime(1470000002);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'start']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'start')));
 
         MicrotimeStub::setMicrotime(1470000003);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'stop']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'stop')));
 
+        $records = $this->testHandler->getRecords();
         $this->assertEquals(
-            [
-                'timer' => [
-                    'foo' => [
+            array(
+                'timer' => array(
+                    'foo' => array(
                         'time' => 1,
                         'totalTime' => 2,
                         'count' => 2
-                    ]
-                ]
-            ],
-            $this->testHandler->getRecords()[3]['context']
+                    )
+                )
+            ),
+            $records[3]['context']
         );
 
         $this->assertEquals(
-            [
-                'foo' => [
+            array(
+                'foo' => array(
                     'totalTime' => 2,
                     'count' => 2
-                ]
-            ],
+                )
+            ),
             $sut->getTimers()
         );
     }
@@ -219,28 +223,29 @@ class TimerProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->configureSut();
 
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'stop']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'stop')));
 
+        $records = $this->testHandler->getRecords();
         $this->assertEquals(
-            [
-                'timer' => [
-                    'foo' => [
+            array(
+                'timer' => array(
+                    'foo' => array(
                         'time' => null,
                         'totalTime' => null,
                         'count' => 0
-                    ]
-                ]
-            ],
-            $this->testHandler->getRecords()[0]['context']
+                    )
+                )
+            ),
+            $records[0]['context']
         );
 
         $this->assertEquals(
-            [
-                'foo' => [
+            array(
+                'foo' => array(
                     'totalTime' => null,
                     'count' => 0
-                ]
-            ],
+                )
+            ),
             $sut->getTimers()
         );
     }
@@ -250,16 +255,16 @@ class TimerProcessorTest extends \PHPUnit_Framework_TestCase
         $sut = $this->configureSut();
 
         MicrotimeStub::setMicrotime(1470000000);
-        $this->logger->log(Logger::DEBUG, "test", ['timer' => ['foo' => 'start']]);
+        $this->logger->log(Logger::DEBUG, "test", array('timer' => array('foo' => 'start')));
 
         $this->assertEquals(
-            [
-                'foo' => [
+            array(
+                'foo' => array(
                     'start' => 1470000000,
                     'totalTime' => null,
                     'count' => 0
-                ]
-            ],
+                )
+            ),
             $sut->getTimers()
         );
     }
