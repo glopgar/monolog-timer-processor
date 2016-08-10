@@ -1,0 +1,24 @@
+{
+  "name": "glopgar/monolog-timer-processor",
+  "description": "A processor for Monolog that adds timing info to the message contexts",
+  "keywords": ["log", "logger", "monolog", "processor", "timer"],
+  "homepage": "https://github.com/glopgar/monolog-timer-processor",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gonzalo López Garmendia",
+      "email": "glopgar@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^4.8|^5.0",
+    "monolog/monolog": "^1.17"
+  },
+  "autoload": {
+    "psr-4": {"Glopgar\\Monolog\\": "src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {"Glopgar\\Monolog\\": "tests/"}
+  }
+}
