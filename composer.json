@@ -11,9 +11,11 @@
       "email": "glopgar@gmail.com"
     }
   ],
-  "require-dev": {
-    "phpunit/phpunit": "^4.8",
+  "require": {
     "monolog/monolog": "^1.17"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
   },
   "autoload": {
     "psr-4": {"Glopgar\\Monolog\\": "src/"}
