@@ -68,10 +68,6 @@ foreach ($timers as $timer => $info) {
 }
 ```
 
-
-Author:
-Gonzalo López Garmendia
-
 [github:glopgar](https://github.com/glopgar)
 
 
